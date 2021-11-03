@@ -1,0 +1,147 @@
+<!-- add Item -->
+<div class="container">
+  <form class="add-product" #myForm="ngForm" (ngSubmit)="onSubmit(myForm , txtInput)">
+    <div class="add-product__images slider">
+      <div class="add-product__image-actions">
+        <div class="add-product__image-action">
+          <a href="#"><i class="fas fa-plus-square"></i></a>
+          <a href="#"><i class="fas fa-edit"></i></a>
+          <a href="#"><i class="fas fa-trash-alt"></i></a>
+        </div>
+      </div>
+
+      <div class="slider__items">
+        <div class="slider__item active" style="background-image: url(assets/img/camera1.jpg)"></div>
+        <div class="slider__item" style="background-image: url(assets/img/camera3.jpg)"></div>
+        <div class="slider__item" style="background-image: url(assets/img/camera2.jpg)"></div>
+      </div>
+
+      <div class="slider__indicators">
+        <span class="slider__indicator active"></span>
+        <span class="slider__indicator"></span>
+        <span class="slider__indicator"></span>
+      </div>
+    </div>
+
+    <div class="add-product__data">
+      <div class="form-controls">
+        <section class="tabs">
+          <div class="tabs__headers">
+            <div class="tabs__header active">English</div>
+            <div class="tabs__header">Arabic</div>
+          </div>
+
+          <div class="tabs__bodies">
+            <div class="tabs__body active">
+
+              <div class="form-group" [ngClass]="{'invalid': txtInput.invalid && txtInput.touched}">
+                <label for="">Name</label>
+                <input required #txtInput="ngModel" minlength="8" maxlength="20" [(ngModel)]="product.data[0].name"
+                  class="form-control" type="text" name="nameField" id="">
+                <span *ngIf="txtInput.invalid && txtInput.touched && txtInput.errors?.required">This Field Is
+                  Required*</span>
+                <span *ngIf="txtInput.invalid && txtInput.touched && txtInput.errors?.minlength">
+                  The Min Length {{txtInput.errors?.minlength.requiredLength}}
+                  And You Have Entered {{txtInput.errors?.minlength.actualLength}}
+                </span>
+              </div>
+
+              <div class="form-group" [ngClass]="{'invalid': txtDescription.invalid && txtDescription.touched}">
+                <label for="">Description</label>
+                <textarea #txtDescription="ngModel" required [(ngModel)]="product.data[0].description"
+                  class="form-control" name="descriptionField" id="" cols="30" rows="4"></textarea>
+              </div>
+            </div>
+
+            <!-- <div class="tabs__body ">
+              <div class="form-group invalid">
+                <label for="">Name</label>
+                <input class="form-control" type="text" name="" id="">
+              </div>
+              <div class="form-group">
+                <label for="">Description</label>
+                <textarea class="form-control" name="" id="" cols="30" rows="4"></textarea>
+              </div>
+            </div>  -->
+          </div>
+        </section>
+
+        <div class="form-group">
+          <label for="">Price</label>
+          <input [(ngModel)]="product.price" class="form-control" type="number" name="price" id="" />
+        </div>
+
+        <br>
+
+        <div class="add-product__discount">
+          <div class="form-group">
+            <label for="">Satus</label>
+            <div class="form-group__radios">
+              <div class="form-group__radio">
+                <input ngModel #radioButton="ngModel" type="radio" name="saleRadio" [value]="true" id=""><span>On
+                  Sale</span>
+              </div>
+              <div class="form-group__radio">
+                <input ngModel #radioButton="ngModel" type="radio" name="saleRadio" [value]="false" id=""><span>Not On
+                  Sale</span>
+              </div>
+            </div>
+          </div>
+          <br />
+          <div class="form-group">
+            <label for="">Discount</label>
+            <input [disabled]="!radioButton.value" [(ngModel)]="product.discount" class="form-control" type="number"
+              name="discount" id="">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="">Payment Types</label>
+          <div class="form-group__checkboxs">
+            <div *ngFor="let PayType of paymentType;  let i = index " class="form-group__checkbox"><input ngModel
+                type="checkbox" [name]="'check_'+i" id=""><span>{{PayType.name}}</span></div>
+          </div>
+        </div>
+
+        <br>
+
+        <!-- <app-payment-types></app-payment-types> -->
+
+        <div class="form-group">
+          <label for="">Category</label>
+          <select [(ngModel)]="product.categoryId" class="form-control" name="category" id="">
+            <option *ngFor="let category of categories" [value]="category.id">
+              {{ category.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="taged-textbox form-group">
+          <label class="taged-textbox__lable" for="">Tags</label>
+          <div class="taged-textbox__data">
+
+            <div class="taged-textbox__tags">
+
+              <div *ngFor="let tag of product.tags" class="taged-textbox__tag">
+                <span>{{tag.name}}</span><a href="#" class="taged-textbox__remove"><i class="fas fa-times"></i></a>
+              </div>
+
+            </div>
+
+            <div class="taged-textbox__clear">
+              <a href="#"><i class="fas fa-times"></i></a>
+            </div>
+          </div>
+          <input #tagInput ngModel (change)="onTagAdded(tagInput)" class="taged-textbox__textbox form-control"
+            type="text" name="Tag" id="">
+        </div>
+        <div class="add-product__actions">
+          <button routerLink="/home" class="btn btn--gray">Cancel</button>
+          <button type="submit" class="btn btn--primary">
+            {{isEditMode ? 'Edit' : 'Add'}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
